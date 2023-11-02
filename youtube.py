@@ -1,21 +1,27 @@
-from fastapi import FastAPI
-import uvicorn
-import json
+import fastapi
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
-from dotenv import load_dotenv
-import os
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
+import os
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
-from utils.dbconnection import connect_to_mongodb, disconnect_from_mongodb
-from api.product_api import search_product, read_csv
 
-load_dotenv()
-app = FastAPI()
-client = connect_to_mongodb()
-# Enable cors
+
+app = FastAPI(debug=True)
+
+
+# origins = [
+#     "http://localhost.tiangolo.com",
+#     "https://localhost.tiangolo.com",
+#     "http://localhost",
+#     "http://localhost:4001",
+#     "http://localhost:4000",
+#     "http://localhost:59981",
+# ]
 origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -25,7 +31,7 @@ app.add_middleware(
 )
 
 
-api_key = os.getenv("YOUTUBE_API_KEY")
+api_key = "AIzaSyBhD5FzIGHoTs2k9zKiEyIU6fGZlZCoyuo"
 
 
 @app.get("/videos/{query}")
@@ -62,16 +68,5 @@ async def response(query: str):
     return video_data
 
 
-@app.get("/search-product/{query}")
-async def search_product_endpoint(query: str):
-    return search_product(client, query)
-
-
-@app.get("/get-all-products")
-async def read_csv_endpoint():
-    return read_csv(client)
-
-
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
-    disconnect_from_mongodb(client)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -18,15 +18,15 @@
     npm start
 ```
 
-### 2. Setup and Start server (Default port: 8000) 🚀-
+### 3. Setup and Start server (Default port: 8000) 🚀-
 
 ```bash
     cd server/
-    pip install uvicorn fastapi
+    pip install uvicorn fastapi pymongo dotenv google-api-python-client openai
     uvicorn main:app --reload
 ```
 
-## ToDo-
+### 4. Sample Prototype -
 
-- Add GPT
-- Filters
+![Alt text](ss1.png)
+![Alt text](ss2.png)
